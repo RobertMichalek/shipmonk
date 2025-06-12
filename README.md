@@ -1,6 +1,5 @@
 # shipmonk
-Task
-
+Task ShipMonk
 
 “Implement a library providing SortedLinkedList
 (linked list that keeps values sorted). It should be
