@@ -84,19 +84,70 @@ class LinkedSeznam
             $aktualni = $aktualni->dalsi;
         }
     }
+
+    public function odstran($hodnota): void
+    {
+        $this->zkontrolujTyp($hodnota);
+
+        if ($this->pointer === null) return;
+
+        if ($this->porovnej($this->pointer->hodnota, $hodnota) === 0) {
+            $this->pointer = $this->pointer->dalsi;
+            return;
+        }
+
+        $aktualni = $this->pointer;
+        while ($aktualni->dalsi !== null && $this->porovnej($aktualni->dalsi->hodnota, $hodnota) !== 0) {
+            $aktualni = $aktualni->dalsi;
+        }
+
+        if ($aktualni->dalsi !== null) {
+            $aktualni->dalsi = $aktualni->dalsi->dalsi;
+        }
+    }
+
+    public function obsahuje($hodnota): bool
+    {
+        $this->zkontrolujTyp($hodnota);
+        $aktualni = $this->pointer;
+
+        while ($aktualni !== null) {
+            if ($this->porovnej($aktualni->hodnota, $hodnota) === 0) {
+                return true;
+            }
+            $aktualni = $aktualni->dalsi;
+        }
+
+        return false;
+    }
+
+    public function velikost(): int
+    {
+        $pocet = 0;
+        $aktualni = $this->pointer;
+        while ($aktualni !== null) {
+            $pocet++;
+            $aktualni = $aktualni->dalsi;
+        }
+        return $pocet;
+    }
 }
-
-
 
 
 $novySeznam = new LinkedSeznam("int");
 $novySeznam->vloz(2);
 $novySeznam->vloz(5);
 $novySeznam->vloz(1);
-$novySeznam->vloz(10); 
+$novySeznam->vloz(10);
 $novySeznam->vloz(1);
 $novySeznam->vloz(100);
 $novySeznam->vloz(99);
 $novySeznam->vloz(2);
 
 echo $novySeznam->vypisSeznam();
+
+$novySeznam->odstran(99);
+echo $novySeznam->vypisSeznam();
+
+echo $novySeznam->obsahuje(100) . PHP_EOL;
+echo $novySeznam->velikost() . PHP_EOL;
